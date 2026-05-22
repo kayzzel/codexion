@@ -1,3 +1,9 @@
+# program name
+codexion
+
+# lsp files
+compile_flags.txt
+
 # Prerequisites
 *.d
 
