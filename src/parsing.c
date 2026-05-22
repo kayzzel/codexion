@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:41:11 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/05/22 12:51:35 by kayzzel          ###   ########.fr       */
+/*   Updated: 2026/05/22 13:01:20 by kayzzel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ int	get_dongle_info(t_args *args, char **argv)
 {
 	if (!is_positive_int(argv[6]) || atoi(argv[6]) == 0)
 		return (6);
-	args->dongle_cooldown = 6;
+	args->dongle_cooldown = atoi(argv[6]);
 	if (strcmp(argv[7], "edf") == 0)
 	{
 		args->scheduler[0] = 'e';
-		args->scheduler[0] = 'd';
-		args->scheduler[0] = 'f';
+		args->scheduler[1] = 'd';
+		args->scheduler[2] = 'f';
 	}
 	else if (strcmp(argv[7], "fifo") == 0)
 	{
 		args->scheduler[0] = 'f';
-		args->scheduler[0] = 'i';
-		args->scheduler[0] = 'f';
-		args->scheduler[0] = 'o';
+		args->scheduler[1] = 'i';
+		args->scheduler[2] = 'f';
+		args->scheduler[3] = 'o';
 	}
 	else
 		return (7);
