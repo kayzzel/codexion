@@ -1,52 +1,48 @@
 #-------------------------------- VARIABLES ----------------------------------#
 
-NAME			=	codexion
-CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror
-MAKEFLAGS		+=	-j $$(nproc) -pthread
-DEPS			=	-MMD -MP
+NAME		=	codexion
+
+CC			=	cc
+
+CFLAGS		=	-Wall -Wextra -Werror
+LDFLAGS		+=	-pthread
+MAKEFLAGS	+=	-j $$(nproc)
+
+DEPS		=	-MMD -MP
 
 #-------------------------------- DIRECTORIES --------------------------------#
 
-
-INCLUDE_DIR		=	includes/
-UTILS_DIR		=	utils/
-
-SRC_DIR			=	src/
-OBJ_DIR			=	.build/
+INCLUDE_DIR	=	includes/
+UTILS_DIR	=	utils/
+SRC_DIR		=	src/
+OBJ_DIR		=	.build/
 
 #-------------------------------- INCLUDES & FLAGS ---------------------------#
 
-INCLUDES		= -I $(INCLUDE_DIR)
+INCLUDES	=	-I $(INCLUDE_DIR)
 
 #-------------------------------- SOURCE FILES -------------------------------#
 
+MAIN_SRCS	:=	main.c
 
-MAIN_SRCS		:=	main.c
+FILES		:=	parsing.c \
+				utils.c
 
-FILES			:=	parsing.c \
-					utils.c
-
-
-SRCS			:=	$(addprefix $(SRC_DIR), \
-					$(FILES) \
-					$(MAIN_SRCS))
+SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(MAIN_SRCS))
 
 #-------------------------------- OBJECTS ------------------------------------#
 
-OBJS			=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
+OBJS		=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPENDENCIES	=	$(OBJS:.o=.d)
-
-BOBJS			=	$(patsubst %.c,$(OBJ_DIR)%.o,$(BONUS_SRCS))
+BOBJS		=	$(patsubst %.c,$(OBJ_DIR)%.o,$(BONUS_SRCS))
 BDEPENDENCIES	=	$(BOBJS:.o=.d)
 
 #-------------------------------- RULES --------------------------------------#
 
-
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)  $(LDFLAGS)
+	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(OBJ_DIR)%.o: %.c
 	mkdir -p $(dir $@)
@@ -55,10 +51,8 @@ $(OBJ_DIR)%.o: %.c
 clean:
 	rm -rf $(OBJ_DIR)
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
-	rm -rf $(OBJ_DIR)
-
 
 re: fclean
 	$(MAKE) all
@@ -70,5 +64,4 @@ compile_flags:
 
 -include $(DEPENDENCIES)
 -include $(BDEPENDENCIES)
-
 .PHONY: all clean fclean re compile_flags
