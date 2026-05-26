@@ -3,7 +3,7 @@
 NAME			=	codexion
 CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror
-MAKEFLAGS		+=	-j $$(nproc) 
+MAKEFLAGS		+=	-j $$(nproc) -pthread
 DEPS			=	-MMD -MP
 
 #-------------------------------- DIRECTORIES --------------------------------#
