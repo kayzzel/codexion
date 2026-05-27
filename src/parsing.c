@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:41:11 by gabach            #+#    #+#             */
-/*   Updated: 2026/05/26 12:43:14 by gabach           ###   ########.fr       */
+/*   Updated: 2026/05/27 16:47:33 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ int	get_coder_info(t_args *args, char **argv)
 {
 	int	index;
 
-	index = 0;
+	if (is_positive_int(argv[0]) || atoi(argv[0]) == 0)
+		return (0);
+	index = 1;
 	while (index < 6)
 	{
 		if (!is_positive_int(argv[index]) || atoi(argv[index]) == 0)
