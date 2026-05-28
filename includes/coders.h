@@ -6,12 +6,16 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:42:44 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/05/27 17:23:34 by gabach           ###   ########.fr       */
+/*   Updated: 2026/05/28 18:49:28 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODERS_H
 # define CODERS_H
+
+// INCLUDES
+
+# include <bits/pthreadtypes.h>
 
 // STRUCTS
 
@@ -30,8 +34,10 @@ typedef struct s_coder
 
 typedef struct s_dongle
 {
-	t_coder	*heap_queue[2];
-	int		(*scheduler)(t_coder[2]);
+	t_coder			*heap_queue[2];
+	int				(*scheduler)(t_coder[2]);
+	pthread_mutex_t	mutex;
+	pthread_cond_t	cond;
 }				t_dongle;
 
 #endif 
