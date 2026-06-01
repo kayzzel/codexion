@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/05/26 12:43:01 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/01 17:42:08 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,16 @@ int	is_positive_int(char *nbr)
 {
 	int	index;
 
-	if (!is_number_int(nbr))
-		return (1);
 	index = 0;
+	if (strcmp(nbr, "-0") == 0)
+		return (1);
 	while (nbr[index] != '\0')
 	{
 		if (nbr[index] < '0' || nbr[index] > '9')
 			return (0);
 		index++;
 	}
+	if (!is_number_int(nbr))
+		return (0);
 	return (1);
 }

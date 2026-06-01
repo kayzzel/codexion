@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:41:11 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 15:17:22 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/01 17:39:00 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ int	print_parsing_error(int error)
 	if (error == 0)
 		printf("The number of coders must be an int > 0\n");
 	if (error == 1)
-		printf("The time to burnout must be an int > 0\n");
+		printf("The time to burnout must be an int >= 0\n");
 	if (error == 2)
-		printf("The time to compile must be an int > 0\n");
+		printf("The time to compile must be an int >= 0\n");
 	if (error == 3)
-		printf("The time to debug must be an int > 0\n");
+		printf("The time to debug must be an int >= 0\n");
 	if (error == 4)
-		printf("The time to refactor must be an int > 0\n");
+		printf("The time to refactor must be an int >= 0\n");
 	if (error == 5)
-		printf("The number of compile needed must be an int > 0\n");
+		printf("The number of compile needed must be an int >= 0\n");
 	if (error == 6)
-		printf("The dongle cooldown must be an int > 0\n");
+		printf("The dongle cooldown must be an int >= 0\n");
 	if (error == 7)
 		printf("The scheduler must be \"fifo\" or \"edf\"\n");
 	printf("usage: ./codexion number_of_coders time_to_burnout \
@@ -48,10 +48,12 @@ int	get_coder_info(t_args *args, char **argv)
 {
 	int	index;
 
-	index = 0;
+	if (!is_positive_int(argv[0]) || atoi(argv[0]) == 0)
+		return (0);
+	index = 1;
 	while (index < 6)
 	{
-		if (!is_positive_int(argv[index]) || atoi(argv[index]) == 0)
+		if (!is_positive_int(argv[index]))
 			return (index);
 		index++;
 	}
@@ -66,7 +68,7 @@ int	get_coder_info(t_args *args, char **argv)
 
 int	get_dongle_info(t_args *args, char **argv)
 {
-	if (!is_positive_int(argv[6]) || atoi(argv[6]) == 0)
+	if (!is_positive_int(argv[6]))
 		return (6);
 	args->dongle_cooldown = atoi(argv[6]);
 	if (strcmp(argv[7], "edf") == 0)
