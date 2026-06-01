@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:42:44 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/05/28 18:49:28 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/01 15:10:49 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 // INCLUDES
 
-# include <bits/pthreadtypes.h>
+# include <pthread.h>
+# include "parsing.h"
 
 // STRUCTS
 
@@ -26,10 +27,7 @@ typedef struct s_coder
 	int			id;
 	t_dongle	*left_dongle;
 	t_dongle	*right_dongle;
-	int			last_compile;
-	int			time_to_compile;
-	int			time_to_debug;
-	int			time_to_refactor;
+	t_args		*infos;
 }				t_coder;
 
 typedef struct s_dongle

@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/05/28 18:49:31 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/01 15:23:26 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_dongle	*create_dongle(char scheduler[5])
 	}
 	if (pthread_cond_init(&dongle->cond, NULL))
 	{
-		free(dongle);
 		pthread_mutex_destroy(&dongle->mutex);
+		free(dongle);
 		return (NULL);
 	}
 	dongle->scheduler = func;
@@ -46,9 +46,18 @@ t_dongle	*create_dongle(char scheduler[5])
 	return (dongle);
 }
 
-t_coder	*create_coder(int coder, t_args args, t_dongles *left,t_dongle *right)
+t_coder	*create_coder(int id, t_args *args, t_dongle *left, t_dongle *right)
 {
-	coder
+	t_coder	*coder;
+
+	coder = malloc(sizeof(t_coder));
+	if (coder == NULL)
+		return (NULL);
+	coder->id = id;
+	coder->left_dongle = left;
+	coder->right_dongle = right;
+	coder->infos = args;
+	return (coder);
 }
 
 t_dongle	**init_dongles(int nb_coders, char scheduler[5])
@@ -75,17 +84,28 @@ t_dongle	**init_dongles(int nb_coders, char scheduler[5])
 	return (dongles);
 }
 
-t_coder	**init_coders(int nb_coders, t_dongle **dongles, t_args args)
+t_coder	**init_coders(t_args *args, t_dongle **dongles)
 {
-	t_coder	**coders;
-	int		index;
+	t_coder		**coders;
+	int			index;
+	int			nb_coders;
 
+	nb_coders = args->nb_coders;
 	coders = malloc(sizeof(t_coder *) * (nb_coders + 1));
 	if (coders == NULL)
 		return (NULL);
 	index = 0;
 	while (index < nb_coders)
 	{
+		coders[index] = create_coder(index, args, dongles[index],
+				dongles[(index + nb_coders - 1) % nb_coders]);
+		if (coders[index] == NULL)
+		{
+			coders[index] = NULL;
+			free_coders(coders);
+			free_dongles(dongles);
+			return (NULL);
+		}
 		index++;
 	}
 	coders[index] = NULL;

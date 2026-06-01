@@ -26,7 +26,9 @@ INCLUDES	=	-I $(INCLUDE_DIR)
 MAIN_SRCS	:=	main.c
 
 FILES		:=	parsing.c \
-				utils.c
+				utils.c \
+				init.c \
+				exit.c
 
 SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(MAIN_SRCS))
 
