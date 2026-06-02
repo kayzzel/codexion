@@ -6,14 +6,14 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 17:42:08 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/02 13:47:50 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include <string.h>
 
-int	is_number_int(char *number)
+static int	is_number_int(char *number)
 {
 	int		index;
 	int		is_sign;

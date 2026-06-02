@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 14:59:02 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/02 15:37:42 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,10 @@ char	*free_coders(t_coder **coders)
 	free(coders);
 	coders = NULL;
 	return (NULL);
+}
+
+void	exit_free(t_coder **coders, t_dongle **dongles)
+{
+	free_coders(coders);
+	free_dongles(dongles);
 }

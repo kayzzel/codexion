@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 15:23:26 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/02 15:52:09 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
-t_dongle	*create_dongle(char scheduler[5])
+static t_dongle	*create_dongle(char scheduler[5])
 {
 	t_dongle	*dongle;
 	int			(*func)(t_coder[2]);
@@ -43,20 +44,33 @@ t_dongle	*create_dongle(char scheduler[5])
 	dongle->scheduler = func;
 	dongle->heap_queue[0] = NULL;
 	dongle->heap_queue[1] = NULL;
+	dongle->last_compile = 0;
 	return (dongle);
 }
 
-t_coder	*create_coder(int id, t_args *args, t_dongle *left, t_dongle *right)
+static t_coder	*create_coder(
+			int id,
+			t_args *args,
+			t_dongle **dongles
+		)
 {
 	t_coder	*coder;
+	int		nb_coders;
 
 	coder = malloc(sizeof(t_coder));
 	if (coder == NULL)
 		return (NULL);
+	nb_coders = args->nb_coders;
 	coder->id = id;
-	coder->left_dongle = left;
-	coder->right_dongle = right;
+	coder->left_dongle = dongles[id];
+	coder->right_dongle = dongles[id];
+	if (id % 2 == 0)
+		coder->right_dongle = dongles[(id + nb_coders - 1) % nb_coders];
+	else
+		coder->left_dongle = dongles[(id + nb_coders - 1) % nb_coders];
 	coder->infos = args;
+	coder->nb_compile = 0;
+	coder->last_compile = 0;
 	return (coder);
 }
 
@@ -97,8 +111,7 @@ t_coder	**init_coders(t_args *args, t_dongle **dongles)
 	index = 0;
 	while (index < nb_coders)
 	{
-		coders[index] = create_coder(index, args, dongles[index],
-				dongles[(index + nb_coders - 1) % nb_coders]);
+		coders[index] = create_coder(index, args, dongles);
 		if (coders[index] == NULL)
 		{
 			coders[index] = NULL;
