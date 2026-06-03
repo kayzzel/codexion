@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:42:44 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/02 11:21:06 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 13:20:13 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ typedef struct s_dongle	t_dongle;
 
 typedef struct s_coder
 {
-	int			id;
-	t_dongle	*left_dongle;
-	t_dongle	*right_dongle;
-	t_args		*infos;
-	int			last_compile;
-	int			nb_compile;
+	int				id;
+	t_dongle		*left_dongle;
+	t_dongle		*right_dongle;
+	t_args			*infos;
+	int				last_compile;
+	int				nb_compile;
+	pthread_cond_t	start_cond;
 }				t_coder;
 
 typedef struct s_dongle

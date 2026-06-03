@@ -27,7 +27,7 @@ MAIN_SRCS	:=	main.c
 
 FILES		:=	parsing.c \
 				utils.c \
-				init.c \
+				init_app.c \
 				exit.c
 
 SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(MAIN_SRCS))

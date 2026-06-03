@@ -6,11 +6,13 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/02 13:47:50 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 13:35:51 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include <bits/pthreadtypes.h>
+#include <stdio.h>
 #include <string.h>
 
 static int	is_number_int(char *number)
@@ -51,4 +53,13 @@ int	is_positive_int(char *nbr)
 	if (!is_number_int(nbr))
 		return (0);
 	return (1);
+}
+
+void	mutex_print(pthread_mutex_t *mutex, char *str)
+{
+	static pthread_mutex_t	*str_mutex = NULL;
+
+	if (str_mutex == NULL)
+		str_mutex = mutex;
+	printf("%s", str);
 }

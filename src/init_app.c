@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_app.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 11:29:30 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 13:17:07 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "parsing.h"
 #include "codexion.h"
 
+#include <bits/pthreadtypes.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,7 +54,8 @@ static t_dongle	*create_dongle(char scheduler[5])
 static t_coder	*create_coder(
 			int id,
 			t_args *args,
-			t_dongle **dongles
+			t_dongle **dongles,
+			pthread_cond_t start_cond
 		)
 {
 	t_coder	*coder;
@@ -71,6 +73,7 @@ static t_coder	*create_coder(
 	else
 		coder->left_dongle = dongles[(id + nb_coders - 1) % nb_coders];
 	coder->infos = args;
+	coder->start_cond = start_cond;
 	coder->nb_compile = 0;
 	coder->last_compile = 0;
 	return (coder);

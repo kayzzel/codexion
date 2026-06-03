@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   init_threads.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
+/*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 12:33:47 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/03 13:36:47 by gabach           ###   ########.fr       */
+/*   Created: 2026/06/03 13:08:28 by gabach            #+#    #+#             */
+/*   Updated: 2026/06/03 13:11:43 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "codexion.h"
 
-// INCLUDES
+int	init_monitoring_thread(t_app *app)
+{
+	(void)app;
+	return (0);
+}
 
-# include <bits/pthreadtypes.h>
+int	init_coder_treads(t_app *app)
+{
+	(void)app;
+	return (0);
+}
 
-// FUNCS
-
-int		is_positive_int(char *str);
-void	mutex_print(pthread_mutex_t *mutex, char *str);
-
-#endif
+int	init_treads(t_app *app)
+{
+	(void)app;
+	return (0);
+}
