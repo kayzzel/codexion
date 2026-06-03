@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 13:17:07 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 13:52:46 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ t_dongle	**init_dongles(int nb_coders, char scheduler[5])
 	return (dongles);
 }
 
-t_coder	**init_coders(t_args *args, t_dongle **dongles)
+t_coder	**init_coders(
+		t_args *args,
+		t_dongle **dongles,
+		pthread_cond_t start_cond
+	)
 {
 	t_coder		**coders;
 	int			index;
@@ -118,7 +122,7 @@ t_coder	**init_coders(t_args *args, t_dongle **dongles)
 	index = 0;
 	while (index < nb_coders)
 	{
-		coders[index] = create_coder(index, args, dongles);
+		coders[index] = create_coder(index, args, dongles, start_cond);
 		if (coders[index] == NULL)
 		{
 			coders[index] = NULL;
@@ -152,7 +156,7 @@ t_app	*init_codexion(int argc, char **argv)
 		return (NULL);
 	}
 	app->dongles = init_dongles(app->args->nb_coders, app->args->scheduler);
-	app->coders = init_coders(app->args, app->dongles);
+	app->coders = init_coders(app->args, app->dongles, app->start_cond);
 	if (app->coders == NULL)
 	{
 		free_app(app);

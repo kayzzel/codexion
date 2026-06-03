@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:33:47 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/03 13:36:47 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 13:54:14 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 // INCLUDES
 
-# include <bits/pthreadtypes.h>
+# include <pthread.h>
 
 // FUNCS
 
 int		is_positive_int(char *str);
-void	mutex_print(pthread_mutex_t *mutex, char *str);
+void	mutex_print(pthread_mutex_t *mutex, char *str, int coder_id);
 
 #endif
