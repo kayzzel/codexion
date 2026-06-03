@@ -6,15 +6,17 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/02 15:52:09 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 11:29:30 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coders.h"
 #include "exit.h"
 #include "parsing.h"
+#include "codexion.h"
 
 #include <pthread.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
@@ -104,6 +106,8 @@ t_coder	**init_coders(t_args *args, t_dongle **dongles)
 	int			index;
 	int			nb_coders;
 
+	if (dongles == NULL)
+		return (NULL);
 	nb_coders = args->nb_coders;
 	coders = malloc(sizeof(t_coder *) * (nb_coders + 1));
 	if (coders == NULL)
@@ -123,4 +127,33 @@ t_coder	**init_coders(t_args *args, t_dongle **dongles)
 	}
 	coders[index] = NULL;
 	return (coders);
+}
+
+t_app	*init_codexion(int argc, char **argv)
+{
+	t_app	*app;
+
+	app = malloc(sizeof(t_app));
+	if (app == NULL)
+		return (NULL);
+	if (pthread_cond_init(&app->start_cond, NULL))
+	{
+		free(app);
+		return (NULL);
+	}
+	app->args = parsing(argc - 1, argv + 1);
+	if (app->args == NULL)
+	{
+		pthread_cond_destroy(&app->start_cond);
+		free(app);
+		return (NULL);
+	}
+	app->dongles = init_dongles(app->args->nb_coders, app->args->scheduler);
+	app->coders = init_coders(app->args, app->dongles);
+	if (app->coders == NULL)
+	{
+		free_app(app);
+		return (NULL);
+	}
+	return (app);
 }

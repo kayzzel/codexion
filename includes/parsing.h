@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:33:32 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/05/22 12:53:03 by kayzzel          ###   ########.fr       */
+/*   Updated: 2026/06/03 10:43:21 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ typedef struct s_args
 
 // FUNCS
 
-int	parsing(t_args *args, int argc, char **argv);
+t_args	*parsing(int argc, char **argv);
 
 #endif

@@ -6,11 +6,13 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/02 15:37:42 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 11:00:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coders.h"
+#include "codexion.h"
+#include "parsing.h"
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -53,8 +55,16 @@ char	*free_coders(t_coder **coders)
 	return (NULL);
 }
 
-void	exit_free(t_coder **coders, t_dongle **dongles)
+void	free_app(t_app *app)
 {
-	free_coders(coders);
-	free_dongles(dongles);
+	if (app == NULL)
+		return ;
+	if (app->args != NULL)
+		free(app->args);
+	if (app->dongles != NULL)
+		free_dongles(app->dongles);
+	if (app->coders != NULL)
+		free_coders(app->coders);
+	pthread_cond_destroy(&app->start_cond);
+	free(app);
 }

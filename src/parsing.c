@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:41:11 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 17:39:00 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 11:25:23 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	print_parsing_error(int error)
+static t_args	*print_parsing_error(int error)
 {
 	printf("Args Parsing Error: ");
 	if (error == -1)
@@ -40,11 +40,11 @@ int	print_parsing_error(int error)
 		printf("The scheduler must be \"fifo\" or \"edf\"\n");
 	printf("usage: ./codexion number_of_coders time_to_burnout \
 time_to_compile time_to_debug time_to_refactor \
-number_of_compiles_required dongle_cooldown schedule");
-	return (1);
+number_of_compiles_required dongle_cooldown schedule\n");
+	return (NULL);
 }
 
-int	get_coder_info(t_args *args, char **argv)
+static int	get_coder_info(t_args *args, char **argv)
 {
 	int	index;
 
@@ -66,7 +66,7 @@ int	get_coder_info(t_args *args, char **argv)
 	return (-1);
 }
 
-int	get_dongle_info(t_args *args, char **argv)
+static int	get_dongle_info(t_args *args, char **argv)
 {
 	if (!is_positive_int(argv[6]))
 		return (6);
@@ -76,6 +76,7 @@ int	get_dongle_info(t_args *args, char **argv)
 		args->scheduler[0] = 'e';
 		args->scheduler[1] = 'd';
 		args->scheduler[2] = 'f';
+		args->scheduler[3] = '\0';
 	}
 	else if (strcmp(argv[7], "fifo") == 0)
 	{
@@ -83,23 +84,37 @@ int	get_dongle_info(t_args *args, char **argv)
 		args->scheduler[1] = 'i';
 		args->scheduler[2] = 'f';
 		args->scheduler[3] = 'o';
+		args->scheduler[4] = '\0';
 	}
 	else
 		return (7);
 	return (-1);
 }
 
-int	parsing(t_args *args, int argc, char **argv)
+t_args	*parsing(int argc, char **argv)
 {
-	int	error;
+	t_args	*args;
+	int		error;
 
+	args = malloc(sizeof(t_args));
+	if (args == NULL)
+		return (NULL);
 	if (argc != 8)
+	{
+		free(args);
 		return (print_parsing_error(-1));
+	}
 	error = get_coder_info(args, argv);
 	if (error != -1)
+	{
+		free(args);
 		return (print_parsing_error(error));
+	}
 	error = get_dongle_info(args, argv);
 	if (error != -1)
+	{
+		free(args);
 		return (print_parsing_error(error));
-	return (0);
+	}
+	return (args);
 }

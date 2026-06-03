@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 14:09:25 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/01 14:18:52 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/03 11:04:47 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 // INCLUDES
 
-# include "coders.h"
-# include "parsing.h"
+# include "codexion.h"
 
 // FUNCS
 
-t_coder		**init_coders(t_args *args, t_dongle **dongles);
-t_dongle	**init_dongles(int nb_coders, char scheduler[5]);
+t_app	*init_codexion(int argc, char **argv);
 
 #endif
