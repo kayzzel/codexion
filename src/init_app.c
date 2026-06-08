@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 13:52:46 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/08 13:24:05 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "exit.h"
 #include "parsing.h"
 #include "codexion.h"
+#include "utils.h"
 
 #include <bits/pthreadtypes.h>
 #include <pthread.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
@@ -31,7 +31,7 @@ static t_dongle	*create_dongle(char scheduler[5])
 	if (dongle == NULL)
 		return (NULL);
 	func = NULL; // replace by edf function
-	if (strcmp(scheduler, "fifo"))
+	if (strcmp(scheduler, "fifo") == 0)
 		func = NULL; // replace by fifo func
 	if (pthread_mutex_init(&dongle->mutex, NULL) != 0)
 	{
@@ -55,7 +55,8 @@ static t_coder	*create_coder(
 			int id,
 			t_args *args,
 			t_dongle **dongles,
-			pthread_cond_t start_cond
+			pthread_cond_t start_cond,
+			int *init
 		)
 {
 	t_coder	*coder;
@@ -76,6 +77,7 @@ static t_coder	*create_coder(
 	coder->start_cond = start_cond;
 	coder->nb_compile = 0;
 	coder->last_compile = 0;
+	coder->init = init;
 	return (coder);
 }
 
@@ -106,7 +108,8 @@ t_dongle	**init_dongles(int nb_coders, char scheduler[5])
 t_coder	**init_coders(
 		t_args *args,
 		t_dongle **dongles,
-		pthread_cond_t start_cond
+		pthread_cond_t start_cond,
+		int	*init
 	)
 {
 	t_coder		**coders;
@@ -122,7 +125,7 @@ t_coder	**init_coders(
 	index = 0;
 	while (index < nb_coders)
 	{
-		coders[index] = create_coder(index, args, dongles, start_cond);
+		coders[index] = create_coder(index, args, dongles, start_cond, init);
 		if (coders[index] == NULL)
 		{
 			coders[index] = NULL;
@@ -139,15 +142,17 @@ t_coder	**init_coders(
 t_app	*init_codexion(int argc, char **argv)
 {
 	t_app	*app;
+	int		init;
 
 	app = malloc(sizeof(t_app));
 	if (app == NULL)
 		return (NULL);
-	if (pthread_cond_init(&app->start_cond, NULL))
-	{
-		free(app);
-		return (NULL);
-	}
+	init = 1;
+	app->init = &init;
+	app->args = NULL;
+	if (pthread_cond_init(&app->start_cond, NULL)
+		|| pthread_mutex_init(&app->print_mutex, NULL))
+		return (free_app(app));
 	app->args = parsing(argc - 1, argv + 1);
 	if (app->args == NULL)
 	{
@@ -156,11 +161,9 @@ t_app	*init_codexion(int argc, char **argv)
 		return (NULL);
 	}
 	app->dongles = init_dongles(app->args->nb_coders, app->args->scheduler);
-	app->coders = init_coders(app->args, app->dongles, app->start_cond);
+	app->coders = init_coders(app->args, app->dongles, app->start_cond, app->init);
 	if (app->coders == NULL)
-	{
-		free_app(app);
-		return (NULL);
-	}
+		return (free_app(app));
+	mutex_print(&app->print_mutex, NULL, -1);
 	return (app);
 }

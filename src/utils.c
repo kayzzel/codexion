@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 14:04:44 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/08 12:39:35 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	mutex_print(
 	static pthread_mutex_t	*str_mutex = NULL;
 
 	if (str_mutex == NULL)
+	{
 		str_mutex = mutex;
+		return ;
+	}
 	pthread_mutex_lock(str_mutex);
 	if (coder_id == -1)
 		printf("%s", str);

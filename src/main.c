@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:27:26 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 11:27:52 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/08 13:33:48 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(int argc, char **argv)
 
 	app = init_codexion(argc, argv);
 	if (app == NULL)
+		return (1);
+	if (init_treads(app))
 		return (1);
 	free_app(app);
 }

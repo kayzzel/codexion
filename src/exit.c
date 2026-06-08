@@ -6,13 +6,12 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/03 11:00:44 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/08 13:36:58 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coders.h"
 #include "codexion.h"
-#include "parsing.h"
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -55,16 +54,40 @@ char	*free_coders(t_coder **coders)
 	return (NULL);
 }
 
-void	free_app(t_app *app)
+t_app	*free_app(t_app *app)
 {
 	if (app == NULL)
-		return ;
-	if (app->args != NULL)
-		free(app->args);
+		return (NULL);
+	if (app->args == NULL)
+	{
+		pthread_cond_destroy(&app->start_cond);
+		pthread_mutex_destroy(&app->print_mutex);
+		free(app);
+		return (NULL);
+	}
+	free(app->args);
 	if (app->dongles != NULL)
 		free_dongles(app->dongles);
 	if (app->coders != NULL)
 		free_coders(app->coders);
 	pthread_cond_destroy(&app->start_cond);
+	pthread_mutex_destroy(&app->print_mutex);
 	free(app);
+	return (NULL);
+}
+
+void	exit_threads(t_app *app, pthread_t *coders_threads)
+{
+	int	index;
+
+	index = 0;
+	app->init = 0;
+	pthread_cond_broadcast(&app->start_cond);
+	while (index < app->args->nb_coders)
+	{
+		pthread_join(coders_threads[index], NULL);
+		index++;
+	}
+	free(coders_threads);
+	free_app(app);
 }
