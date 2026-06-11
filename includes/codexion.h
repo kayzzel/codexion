@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:32:10 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/08 12:42:30 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/11 12:18:14 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 
 # include "coders.h"
 # include "parsing.h"
-#include <bits/pthreadtypes.h>
 # include <pthread.h>
 
 // STRUCTS
 
 typedef struct s_app
 {
-	int				*init;
+	int				init;
 	t_args			*args;
 	t_coder			**coders;
 	t_dongle		**dongles;

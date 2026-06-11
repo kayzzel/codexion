@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:42:44 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/08 12:47:14 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/11 12:51:47 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_coder
 	t_args			*infos;
 	int				last_compile;
 	int				nb_compile;
-	pthread_cond_t	start_cond;
+	pthread_cond_t	*start_cond;
 }				t_coder;
 
 typedef struct s_dongle

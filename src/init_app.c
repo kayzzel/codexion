@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/08 13:24:05 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/11 12:51:33 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ static t_dongle	*create_dongle(char scheduler[5])
 
 static t_coder	*create_coder(
 			int id,
-			t_args *args,
-			t_dongle **dongles,
-			pthread_cond_t start_cond,
-			int *init
+			t_app *app
 		)
 {
 	t_coder	*coder;
@@ -65,19 +62,19 @@ static t_coder	*create_coder(
 	coder = malloc(sizeof(t_coder));
 	if (coder == NULL)
 		return (NULL);
-	nb_coders = args->nb_coders;
+	nb_coders = app->args->nb_coders;
 	coder->id = id;
-	coder->left_dongle = dongles[id];
-	coder->right_dongle = dongles[id];
+	coder->left_dongle = app->dongles[id];
+	coder->right_dongle = app->dongles[id];
 	if (id % 2 == 0)
-		coder->right_dongle = dongles[(id + nb_coders - 1) % nb_coders];
+		coder->right_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
 	else
-		coder->left_dongle = dongles[(id + nb_coders - 1) % nb_coders];
-	coder->infos = args;
-	coder->start_cond = start_cond;
+		coder->left_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
+	coder->infos = app->args;
+	coder->start_cond = &app->start_cond;
 	coder->nb_compile = 0;
 	coder->last_compile = 0;
-	coder->init = init;
+	coder->init = &app->init;
 	return (coder);
 }
 
@@ -105,32 +102,25 @@ t_dongle	**init_dongles(int nb_coders, char scheduler[5])
 	return (dongles);
 }
 
-t_coder	**init_coders(
-		t_args *args,
-		t_dongle **dongles,
-		pthread_cond_t start_cond,
-		int	*init
-	)
+t_coder	**init_coders(t_app *app)
 {
 	t_coder		**coders;
 	int			index;
-	int			nb_coders;
 
-	if (dongles == NULL)
+	if (app->dongles == NULL)
 		return (NULL);
-	nb_coders = args->nb_coders;
-	coders = malloc(sizeof(t_coder *) * (nb_coders + 1));
+	coders = malloc(sizeof(t_coder *) * (app->args->nb_coders + 1));
 	if (coders == NULL)
 		return (NULL);
 	index = 0;
-	while (index < nb_coders)
+	while (index < app->args->nb_coders)
 	{
-		coders[index] = create_coder(index, args, dongles, start_cond, init);
+		coders[index] = create_coder(index, app);
 		if (coders[index] == NULL)
 		{
 			coders[index] = NULL;
 			free_coders(coders);
-			free_dongles(dongles);
+			free_dongles(app->dongles);
 			return (NULL);
 		}
 		index++;
@@ -142,13 +132,11 @@ t_coder	**init_coders(
 t_app	*init_codexion(int argc, char **argv)
 {
 	t_app	*app;
-	int		init;
 
 	app = malloc(sizeof(t_app));
 	if (app == NULL)
 		return (NULL);
-	init = 1;
-	app->init = &init;
+	app->init = 0;
 	app->args = NULL;
 	if (pthread_cond_init(&app->start_cond, NULL)
 		|| pthread_mutex_init(&app->print_mutex, NULL))
@@ -161,7 +149,7 @@ t_app	*init_codexion(int argc, char **argv)
 		return (NULL);
 	}
 	app->dongles = init_dongles(app->args->nb_coders, app->args->scheduler);
-	app->coders = init_coders(app->args, app->dongles, app->start_cond, app->init);
+	app->coders = init_coders(app);
 	if (app->coders == NULL)
 		return (free_app(app));
 	mutex_print(&app->print_mutex, NULL, -1);

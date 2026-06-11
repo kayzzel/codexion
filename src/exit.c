@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/08 13:36:58 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/11 12:50:50 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exit_threads(t_app *app, pthread_t *coders_threads)
 	int	index;
 
 	index = 0;
-	app->init = 0;
+	app->init = -1;
 	pthread_cond_broadcast(&app->start_cond);
 	while (index < app->args->nb_coders)
 	{
