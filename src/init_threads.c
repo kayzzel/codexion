@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:08:28 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 17:21:31 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 22:56:44 by kayzzel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_monitoring_thread(t_app *app)
 {
 	pthread_t	monitor_thread;
 
-	if (pthread_create(&monitor_thread, NULL, &monitor_thread_init, &app) != 0)
+	if (pthread_create(&monitor_thread, NULL, &monitor_thread_init, app) != 0)
 		return (1);
 	pthread_join(monitor_thread, NULL);
 	return (0);
@@ -67,5 +67,6 @@ int	init_treads(t_app *app)
 		exit_threads(app, coders_threads);
 		return (1);
 	}
+	free(coders_threads);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 16:43:45 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 22:57:25 by kayzzel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	mutex_print(
 		str_mutex = mutex;
 		return ;
 	}
-	time = get_time_usec();
 	pthread_mutex_lock(str_mutex);
+	time = get_time_usec() / 1000;
 	if (coder_id == -1)
 		printf("%s\n", str);
 	else
@@ -99,7 +99,7 @@ int	msleep(int msec, t_app *app)
 		if (app->end == 1)
 			return (1);
 		usleep(us_loop);
-		total_usec = us_loop;
+		total_usec += us_loop;
 	}
 	return (app->end);
 }
