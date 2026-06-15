@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:08:28 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 15:29:28 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 17:21:31 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_monitoring_thread(t_app *app)
 {
 	pthread_t	monitor_thread;
 
-	if (pthread_create(&monitor_thread, NULL, &monitor_thread_init, &app))
+	if (pthread_create(&monitor_thread, NULL, &monitor_thread_init, &app) != 0)
 		return (1);
 	pthread_join(monitor_thread, NULL);
 	return (0);
@@ -39,10 +39,8 @@ int	init_coder_treads(t_app *app, pthread_t *threads)
 		arg = malloc(sizeof(t_coder_pth_arg));
 		arg->app = app;
 		arg->coder = app->coders[index];
-		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg))
-		{
+		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg) != 0)
 			return (1);
-		}
 		index++;
 	}
 	return (0);

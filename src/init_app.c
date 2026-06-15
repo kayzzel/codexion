@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 15:27:09 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 17:19:02 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static t_coder	*create_coder(
 	else
 		coder->left_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
 	coder->infos = app->args;
-	coder->start_cond = &app->start_cond;
 	coder->nb_compile = 0;
 	coder->last_compile = 0;
 	coder->init = &app->init;
@@ -118,7 +117,7 @@ t_coder	**init_coders(t_app *app)
 	index = 0;
 	while (index < app->args->nb_coders)
 	{
-		coders[index] = create_coder(index, app);
+		coders[index] = create_coder(index + 1, app);
 		if (coders[index] == NULL)
 		{
 			free_coders(coders);
@@ -141,8 +140,8 @@ t_app	*init_codexion(int argc, char **argv)
 	app->init = 0;
 	app->end = 0;
 	app->args = NULL;
-	if (pthread_cond_init(&app->start_cond, NULL)
-		|| pthread_mutex_init(&app->app_mutex, NULL))
+	if (pthread_cond_init(&app->start_cond, NULL) != 0
+		|| pthread_mutex_init(&app->app_mutex, NULL) != 0)
 		return (free_app(app));
 	app->args = parsing(argc - 1, argv + 1);
 	if (app->args == NULL)

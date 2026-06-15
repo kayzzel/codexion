@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 16:09:11 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 17:24:31 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	*monitor_thread_init(void *app_ptr)
 
 	app = (t_app *)app_ptr;
 	app->init = 1;
-	get_time_usec();
-	pthread_cond_broadcast(&app->start_cond);
-	printf("test\n");
+	init_time();
+	if (pthread_cond_broadcast(&app->start_cond) != 0)
+		printf("monitor_thread_init\n");
 	monitor_main_loop(app);
 	return (NULL);
 }
