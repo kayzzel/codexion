@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 15:24:27 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 17:43:07 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*coder_thread_init(void	*arg_ptr)
 	free(arg_ptr);
 	pthread_mutex_lock(&app->app_mutex);
 	while (*coder->init == 0)
-		pthread_cond_wait(coder->start_cond, &app->app_mutex);
+		pthread_cond_wait(&app->start_cond, &app->app_mutex);
 	pthread_mutex_unlock(&app->app_mutex);
 	if (*coder->init == -1)
 		return (NULL);
