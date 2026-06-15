@@ -27,6 +27,9 @@ MAIN_SRCS	:=	main.c
 
 FILES		:=	parsing.c \
 				utils.c \
+				coder.c \
+				init_threads.c \
+				monitor.c \
 				init_app.c \
 				exit.c
 

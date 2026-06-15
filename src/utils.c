@@ -6,15 +6,19 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:34:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/08 12:39:35 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 15:27:55 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-#include <bits/pthreadtypes.h>
+#include "codexion.h"
+
+#include <bits/types/struct_timeval.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 static int	is_number_int(char *number)
 {
@@ -63,16 +67,46 @@ void	mutex_print(
 	)
 {
 	static pthread_mutex_t	*str_mutex = NULL;
+	int						time;
 
 	if (str_mutex == NULL)
 	{
 		str_mutex = mutex;
 		return ;
 	}
+	time = get_time_usec();
 	pthread_mutex_lock(str_mutex);
 	if (coder_id == -1)
-		printf("%s", str);
+		printf("%s\n", str);
 	else
-		printf("coder: %i, %s", coder_id, str);
+		printf("%i %i %s\n", time, coder_id, str);
 	pthread_mutex_unlock(str_mutex);
+}
+
+int	get_time_usec(void)
+{
+	static int		start_time = -1;
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	if (start_time == -1)
+		start_time = tv.tv_sec * 1000000 + tv.tv_usec;
+	return ((tv.tv_sec * 1000000 + tv.tv_usec) - start_time);
+}
+
+int	msleep(int msec, t_app *app)
+{
+	int	total_usec;
+	int	us_loop;
+
+	total_usec = 0;
+	us_loop = 100;
+	while (total_usec * 1000 < msec)
+	{
+		if (app->end == 1)
+			return (1);
+		usleep(us_loop);
+		total_usec = us_loop;
+	}
+	return (app->end);
 }

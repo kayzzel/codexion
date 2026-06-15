@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/11 12:50:50 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/15 15:26:38 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_app	*free_app(t_app *app)
 	if (app->args == NULL)
 	{
 		pthread_cond_destroy(&app->start_cond);
-		pthread_mutex_destroy(&app->print_mutex);
+		pthread_mutex_destroy(&app->app_mutex);
 		free(app);
 		return (NULL);
 	}
@@ -71,7 +71,7 @@ t_app	*free_app(t_app *app)
 	if (app->coders != NULL)
 		free_coders(app->coders);
 	pthread_cond_destroy(&app->start_cond);
-	pthread_mutex_destroy(&app->print_mutex);
+	pthread_mutex_destroy(&app->app_mutex);
 	free(app);
 	return (NULL);
 }

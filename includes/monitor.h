@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   monitor.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
+/*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 12:33:47 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/15 14:36:08 by gabach           ###   ########.fr       */
+/*   Created: 2026/06/15 11:49:22 by gabach            #+#    #+#             */
+/*   Updated: 2026/06/15 11:56:35 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
-
-// INCLUDES
-
-# include "codexion.h"
-
-# include <pthread.h>
+#ifndef MONITOR_H
+# define MONITOR_H
 
 // FUNCS
 
-int		is_positive_int(char *str);
-void	mutex_print(pthread_mutex_t *mutex, char *str, int coder_id);
-int		get_time_usec(void);
-int		msleep(int msec, t_app *app);
+void	*monitor_thread_init(void *app_ptr);
 
 #endif
