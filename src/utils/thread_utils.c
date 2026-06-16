@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   thread_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 10:27:26 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 12:53:16 by gabach           ###   ########.fr       */
+/*   Created: 2026/06/16 14:29:42 by gabach            #+#    #+#             */
+/*   Updated: 2026/06/16 14:50:00 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include "init.h"
-#include "exit.h"
+#include "utils.h"
 
-#include <string.h>
+#include <pthread.h>
 
-int	main(int argc, char **argv)
+int	program_ended(t_app *app)
 {
-	t_app	*app;
-
-	app = init_codexion(argc, argv);
-	if (app == NULL)
+	pthread_mutex_lock(&app->app_mutex);
+	if (app->end)
+	{
+		pthread_mutex_unlock(&app->app_mutex);
 		return (1);
-	if (init_treads(app))
-		return (1);
-	free_app(app);
+	}
+	pthread_mutex_unlock(&app->app_mutex);
+	return (0);
 }

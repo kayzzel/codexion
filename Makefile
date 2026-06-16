@@ -25,15 +25,22 @@ INCLUDES	=	-I $(INCLUDE_DIR)
 
 MAIN_SRCS	:=	main.c
 
+UTILS		:=	$(addprefix $(UTILS_DIR), \
+					number_utils.c \
+					print_utils.c \
+					time_utils.c \
+					thread_utils.c \
+				)
+
 FILES		:=	parsing.c \
-				utils.c \
 				coder.c \
 				init_threads.c \
 				monitor.c \
 				init_app.c \
-				exit.c
+				exit.c \
+				$(MAIN_SRCS)\
 
-SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(MAIN_SRCS))
+SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(UTILS))
 
 #-------------------------------- OBJECTS ------------------------------------#
 

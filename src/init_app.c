@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 17:19:02 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/16 11:34:15 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,6 @@ t_app	*init_codexion(int argc, char **argv)
 	app->coders = init_coders(app);
 	if (app->coders == NULL)
 		return (free_app(app));
-	mutex_print(&app->app_mutex, NULL, -1);
+	init_mutex_print(&app->app_mutex);
 	return (app);
 }
