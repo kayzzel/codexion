@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 11:24:24 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 14:24:23 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/16 17:35:31 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,20 @@ int	get_time_usec(void)
 
 int	msleep(int msec, t_app *app)
 {
-	int	total_usec;
-	int	us_loop;
+	int	time_goal;
 	int	return_value;
 
-	total_usec = 0;
-	us_loop = 500;
-	while (total_usec / 1000 < msec)
+	time_goal = get_time_usec() + msec * 1000;
+	while (time_goal > get_time_usec())
 	{
-		if (total_usec % 3000 == 1)
+		pthread_mutex_lock(&app->app_mutex);
+		if (app->end == 1)
 		{
-			pthread_mutex_lock(&app->app_mutex);
-			if (app->end == 1)
-			{
-				pthread_mutex_unlock(&app->app_mutex);
-				return (1);
-			}
 			pthread_mutex_unlock(&app->app_mutex);
+			return (1);
 		}
-		usleep(us_loop);
-		total_usec += us_loop;
+		pthread_mutex_unlock(&app->app_mutex);
+		usleep(100);
 	}
 	pthread_mutex_lock(&app->app_mutex);
 	return_value = app->end;

@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 14:44:50 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/16 17:36:56 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	coder_compile(t_coder *coder, t_app *app)
 	thread_print("is compiling", coder->id);
 	if (program_ended(app))
 		return (1);
-	//msleep(app->args->time_to_compile, app);
-	usleep(app->args->time_to_compile * 1000);
+	msleep(app->args->time_to_compile, app);
 	return (program_ended(app));
 }
 
@@ -43,15 +42,13 @@ void	*coder_main_loop(t_coder *coder, t_app *app)
 		thread_print("is debuging", coder->id);
 		if (program_ended(app))
 			return (NULL);
-		//msleep(app->args->time_to_debug, app);
-		usleep(app->args->time_to_compile * 1000);
+		msleep(app->args->time_to_debug, app);
 		if (program_ended(app))
 			return (NULL);
 		thread_print("is refactoring", coder->id);
 		if (program_ended(app))
 			return (NULL);
-		//msleep(app->args->time_to_refactor, app);
-		usleep(app->args->time_to_compile * 1000);
+		msleep(app->args->time_to_refactor, app);
 	}
 	return (NULL);
 }
