@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:08:28 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 17:49:03 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 18:07:49 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,25 @@ int	init_coder_treads(t_app *app, pthread_t *threads)
 	index = 0;
 	while (index < app->args->nb_coders)
 	{
-		arg = malloc(sizeof(t_coder_pth_arg)); // !
+		arg = malloc(sizeof(t_coder_pth_arg));
+		if (arg == NULL)
+			return (index);
 		arg->app = app;
 		arg->coder = app->coders[index];
-		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg) != 0) // !
-			return (1);
+		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg) != 0)
+		{
+			free(arg);
+			return (index);
+		}
 		index++;
 	}
-	return (0);
+	return (index);
 }
 
 int	init_treads(t_app *app)
 {
 	pthread_t	*coders_threads;
+	int			created_threads;
 
 	coders_threads = malloc(sizeof(pthread_t) * app->args->nb_coders);
 	if (coders_threads == NULL)
@@ -56,15 +62,16 @@ int	init_treads(t_app *app)
 		free_app(app);
 		return (1);
 	}
-	if (init_coder_treads(app, coders_threads) == 1) // !
+	created_threads = init_coder_treads(app, coders_threads);
+	if (created_threads != app->args->nb_coders)
 	{
-		exit_threads(app, coders_threads);
+		exit_threads(app, created_threads, coders_threads);
 		return (1);
 	}
 	app->coder_threads = coders_threads;
 	if (init_monitoring_thread(app) == 1)
 	{
-		exit_threads(app, coders_threads);
+		exit_threads(app, created_threads, coders_threads);
 		return (1);
 	}
 	free(coders_threads);
