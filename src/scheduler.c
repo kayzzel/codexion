@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 11:21:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 15:23:53 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 16:49:28 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	fifo(t_coder *coder, t_coder *heap_queue[2])
 		|| (heap_queue[1] != NULL && heap_queue[1]->id == coder->id))
 		return ;
 	if (heap_queue[0] == NULL)
+	{
+		heap_queue[1] = heap_queue[0];
 		heap_queue[0] = coder;
+	}
 	else
 		heap_queue[1] = coder;
 }
@@ -40,7 +43,10 @@ void	edf(t_coder *coder, t_coder *heap_queue[2])
 		return ;
 	}
 	if (heap_queue[0]->last_compile > coder->last_compile)
+	{
+		heap_queue[1] = heap_queue[0];
 		heap_queue[0] = coder;
+	}
 	else
 		heap_queue[1] = coder;
 }

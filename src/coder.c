@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 14:46:27 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 17:25:18 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 int	get_dongles(t_coder *coder, t_app *app)
 {
+	coder->left_dongle->heap_manager(coder, coder->left_dongle->heap_queue);
+	coder->right_dongle->heap_manager(coder, coder->right_dongle->heap_queue);
 	if (coder->id % 2 == 1)
 	{
 		if (get_dongle(coder, coder->left_dongle, app))

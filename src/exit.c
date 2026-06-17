@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 13:35:38 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 17:40:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*free_dongles(t_dongle **dongles)
 	{
 		pthread_mutex_destroy(&dongles[index]->mutex);
 		free(dongles[index]);
-		dongles[index] = NULL;
 		index++;
 	}
 	free(dongles);

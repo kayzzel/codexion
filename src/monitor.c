@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 15:42:44 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 16:34:29 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "utils.h"
 
 #include <pthread.h>
-#include <stdio.h>
 #include <unistd.h>
 
 void	wait_coders_end(t_app *app)

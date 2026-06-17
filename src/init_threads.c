@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:08:28 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/15 22:56:44 by kayzzel          ###   ########.fr       */
+/*   Updated: 2026/06/17 17:49:03 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	init_coder_treads(t_app *app, pthread_t *threads)
 	index = 0;
 	while (index < app->args->nb_coders)
 	{
-		arg = malloc(sizeof(t_coder_pth_arg));
+		arg = malloc(sizeof(t_coder_pth_arg)); // !
 		arg->app = app;
 		arg->coder = app->coders[index];
-		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg) != 0)
+		if (pthread_create(&threads[index], NULL, &coder_thread_init, arg) != 0) // !
 			return (1);
 		index++;
 	}
@@ -56,7 +56,7 @@ int	init_treads(t_app *app)
 		free_app(app);
 		return (1);
 	}
-	if (init_coder_treads(app, coders_threads) == 1)
+	if (init_coder_treads(app, coders_threads) == 1) // !
 	{
 		exit_threads(app, coders_threads);
 		return (1);
