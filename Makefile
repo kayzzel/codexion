@@ -38,7 +38,8 @@ FILES		:=	parsing.c \
 				monitor.c \
 				init_app.c \
 				exit.c \
-				$(MAIN_SRCS)\
+				scheduler.c \
+				$(MAIN_SRCS)
 
 SRCS		:=	$(addprefix $(SRC_DIR), $(FILES) $(UTILS))
 

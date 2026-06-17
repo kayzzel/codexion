@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 11:34:15 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 13:34:03 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "exit.h"
 #include "parsing.h"
 #include "codexion.h"
+#include "scheduler.h"
 #include "utils.h"
 
 #include <pthread.h>
@@ -21,32 +22,27 @@
 #include <string.h>
 #include <sys/time.h>
 
-static t_dongle	*create_dongle(char scheduler[5])
+static t_dongle	*create_dongle(char scheduler[5], int cooldown)
 {
 	t_dongle	*dongle;
-	int			(*func)(t_coder[2]);
+	void		(*func)(t_coder*, t_coder*[2]);
 
 	dongle = malloc(sizeof(t_dongle));
 	if (dongle == NULL)
 		return (NULL);
-	func = NULL; // replace by edf function
+	func = edf;
 	if (strcmp(scheduler, "fifo") == 0)
-		func = NULL; // replace by fifo func
+		func = fifo;
 	if (pthread_mutex_init(&dongle->mutex, NULL) != 0)
 	{
 		free(dongle);
 		return (NULL);
 	}
-	if (pthread_cond_init(&dongle->cond, NULL))
-	{
-		pthread_mutex_destroy(&dongle->mutex);
-		free(dongle);
-		return (NULL);
-	}
-	dongle->scheduler = func;
+	dongle->held = 0;
+	dongle->heap_manager = func;
 	dongle->heap_queue[0] = NULL;
 	dongle->heap_queue[1] = NULL;
-	dongle->last_compile = 0;
+	dongle->last_compile = -cooldown;
 	return (dongle);
 }
 
@@ -70,8 +66,8 @@ static t_coder	*create_coder(
 	coder->id = id;
 	coder->left_dongle = app->dongles[id];
 	coder->right_dongle = app->dongles[id];
-	if (id % 2 == 0)
-		coder->right_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
+	if (app->args->nb_coders == 1)
+		coder->right_dongle = NULL;
 	else
 		coder->left_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
 	coder->infos = app->args;
@@ -81,18 +77,20 @@ static t_coder	*create_coder(
 	return (coder);
 }
 
-t_dongle	**init_dongles(int nb_coders, char scheduler[5])
+t_dongle	**init_dongles(t_app *app)
 {
 	t_dongle	**dongles;
 	int			index;
+	t_args		*args;
 
-	dongles = malloc(sizeof(t_dongle *) * (nb_coders + 1));
+	args = app->args;
+	dongles = malloc(sizeof(t_dongle *) * (args->nb_coders + 1));
 	if (dongles == NULL)
 		return (NULL);
 	index = 0;
-	while (index < nb_coders)
+	while (index < args->nb_coders)
 	{
-		dongles[index] = create_dongle(scheduler);
+		dongles[index] = create_dongle(args->scheduler, args->dongle_cooldown);
 		if (dongles[index] == NULL)
 		{
 			free_dongles(dongles);
@@ -151,7 +149,7 @@ t_app	*init_codexion(int argc, char **argv)
 		free(app);
 		return (NULL);
 	}
-	app->dongles = init_dongles(app->args->nb_coders, app->args->scheduler);
+	app->dongles = init_dongles(app);
 	app->coders = init_coders(app);
 	if (app->coders == NULL)
 		return (free_app(app));

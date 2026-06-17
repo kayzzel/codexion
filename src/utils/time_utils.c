@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 11:24:24 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 17:35:31 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 10:53:50 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,13 @@ int	get_time_usec(void)
 int	msleep(int msec, t_app *app)
 {
 	int	time_goal;
-	int	return_value;
 
 	time_goal = get_time_usec() + msec * 1000;
 	while (time_goal > get_time_usec())
 	{
-		pthread_mutex_lock(&app->app_mutex);
-		if (app->end == 1)
-		{
-			pthread_mutex_unlock(&app->app_mutex);
+		if (program_ended(app))
 			return (1);
-		}
-		pthread_mutex_unlock(&app->app_mutex);
 		usleep(100);
 	}
-	pthread_mutex_lock(&app->app_mutex);
-	return_value = app->end;
-	pthread_mutex_unlock(&app->app_mutex);
-	return (return_value);
+	return (program_ended(app));
 }

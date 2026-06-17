@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread_utils.c                                     :+:      :+:    :+:   */
+/*   scheduler.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/16 14:29:42 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 10:15:12 by gabach           ###   ########.fr       */
+/*   Created: 2026/06/17 11:21:21 by gabach            #+#    #+#             */
+/*   Updated: 2026/06/17 12:55:30 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include "utils.h"
+#ifndef SCHEDULER_H
+# define SCHEDULER_H
 
-#include <pthread.h>
+// INCLUDES
 
-int	program_ended(t_app *app)
-{
-	pthread_mutex_lock(&app->app_mutex);
-	if (app->end)
-	{
-		pthread_mutex_unlock(&app->app_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&app->app_mutex);
-	return (0);
-}
+# include "coders.h"
+# include "codexion.h"
+
+// FUNCS
+
+int		scheduler(t_coder *coder, t_dongle *dongle);
+int		get_dongle(t_coder *coder, t_dongle *dongle, t_app *app);
+void	fifo(t_coder *coder, t_coder *heap_queue[2]);
+void	edf(t_coder *coder, t_coder *heap_queue[2]);
+
+#endif

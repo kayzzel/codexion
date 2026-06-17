@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:42:44 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/15 16:48:31 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 13:32:58 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ typedef struct s_coder
 typedef struct s_dongle
 {
 	t_coder			*heap_queue[2];
-	int				(*scheduler)(t_coder[2]);
+	void			(*heap_manager)(t_coder*, t_coder*[2]);
 	int				last_compile;
 	pthread_mutex_t	mutex;
-	pthread_cond_t	cond;
+	int				held;
 }				t_dongle;
 
 // FUNCS
