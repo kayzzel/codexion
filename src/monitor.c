@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 17:40:16 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 15:42:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ int	end_compiles(t_app *app)
 	}
 	if (compiled == app->args->nb_coders)
 	{
+		pthread_mutex_lock(&app->app_mutex);
 		app->end = 1;
+		pthread_mutex_unlock(&app->app_mutex);
 		return (1);
 	}
 	return (0);
@@ -107,10 +109,8 @@ void	*monitor_thread_init(void *app_ptr)
 	app = (t_app *)app_ptr;
 	pthread_mutex_lock(&app->app_mutex);
 	app->init = 1;
+	pthread_cond_broadcast(&app->start_cond);
 	pthread_mutex_unlock(&app->app_mutex);
-	init_time();
-	if (pthread_cond_broadcast(&app->start_cond) != 0)
-		printf("monitor_thread_init\n");
 	monitor_main_loop(app);
 	return (NULL);
 }

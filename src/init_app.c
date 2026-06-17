@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 13:34:03 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 14:45:55 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,10 @@ static t_coder	*create_coder(
 	}
 	nb_coders = app->args->nb_coders;
 	coder->id = id;
-	coder->left_dongle = app->dongles[id];
-	coder->right_dongle = app->dongles[id];
+	coder->left_dongle = app->dongles[id - 1];
+	coder->right_dongle = app->dongles[(id + nb_coders - 2) % nb_coders];
 	if (app->args->nb_coders == 1)
 		coder->right_dongle = NULL;
-	else
-		coder->left_dongle = app->dongles[(id + nb_coders - 1) % nb_coders];
 	coder->infos = app->args;
 	coder->nb_compile = 0;
 	coder->last_compile = 0;

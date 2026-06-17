@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 13:37:43 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/17 14:46:27 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*coder_main_loop(t_coder *coder, t_app *app)
 	{
 		if (coder_compile(coder, app))
 			return (NULL);
-		thread_print("is debuging", coder->id);
+		thread_print("is debugging", coder->id);
 		if (program_ended(app))
 			return (NULL);
 		msleep(app->args->time_to_debug, app);
