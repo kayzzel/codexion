@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 16:10:45 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 18:31:13 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "utils.h"
 
 #include <pthread.h>
+#include <stdio.h>
 #include <unistd.h>
 
 void	wait_coders_end(t_app *app)
@@ -107,6 +108,8 @@ void	*monitor_thread_init(void *app_ptr)
 
 	app = (t_app *)app_ptr;
 	pthread_mutex_lock(&app->app_mutex);
+	init_time();
+	init_mutex_print(&app->app_mutex);
 	app->init = 1;
 	pthread_cond_broadcast(&app->start_cond);
 	pthread_mutex_unlock(&app->app_mutex);
