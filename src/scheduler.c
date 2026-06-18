@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 11:21:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 16:49:28 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 14:50:22 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void	fifo(t_coder *coder, t_coder *heap_queue[2])
 		|| (heap_queue[1] != NULL && heap_queue[1]->id == coder->id))
 		return ;
 	if (heap_queue[0] == NULL)
-	{
-		heap_queue[1] = heap_queue[0];
 		heap_queue[0] = coder;
-	}
 	else
 		heap_queue[1] = coder;
 }
@@ -101,11 +98,10 @@ int	get_dongle(t_coder *coder, t_dongle *dongle, t_app *app)
 			if (msleep(cooldown_remaining, app))
 				return (1);
 		}
-		usleep(200);
+		else if (scheduler_return != 1)
+			usleep(200);
 		if (program_ended(app))
-		{
 			return (1);
-		}
 	}
 	return (program_ended(app));
 }

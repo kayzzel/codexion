@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 16:34:29 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 14:13:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ void	*monitor_main_loop(t_app *app)
 {
 	while (app->end == 0)
 	{
-		if (is_burnout(app))
+		if (end_compiles(app))
 		{
 			wait_coders_end(app);
 			return (NULL);
 		}
-		if (end_compiles(app))
+		if (is_burnout(app))
 		{
 			wait_coders_end(app);
 			return (NULL);
