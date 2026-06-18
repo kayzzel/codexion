@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 11:25:38 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 11:25:45 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 15:30:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,43 @@
 
 #include <string.h>
 
-int	is_positive_int(char *nbr)
+static int	is_zero(char *number)
+{
+	if (number[0] == '-' || number[0] == '+')
+		number++;
+	while (number[0] == '0')
+		number++;
+	return (strlen(number) == 0);
+}
+
+static int	is_number_int(char *number)
 {
 	int		index;
 	char	*comp;
-	int		is_sign;
 
 	index = 0;
-	if (strcmp(nbr, "-0") == 0)
+	comp = "2147483647";
+	if (number[0] == '-')
+		comp = "2147483648";
+	if (number[index] == '-' || number[index] == '+')
+		number++;
+	while (number[0] == '0')
+		number++;
+	if (strlen(number) > 10)
+		return (0);
+	if (strlen(number) < 10)
+		return (1);
+	while (number[index] == comp[index])
+		index++;
+	return (number[index] <= comp[index]);
+}
+
+int	is_positive_int(char *nbr)
+{
+	int	index;
+
+	index = 0;
+	if (is_zero(nbr))
 		return (1);
 	while (nbr[index] != '\0')
 	{
@@ -29,16 +58,7 @@ int	is_positive_int(char *nbr)
 			return (0);
 		index++;
 	}
-	index = 0;
-	is_sign = 0;
-	comp = "2147483647";
-	if (nbr[0] == '-' || strlen(nbr) - is_sign > 10)
+	if (!is_number_int(nbr))
 		return (0);
-	if (nbr[0] == '+')
-		is_sign = 1;
-	if (strlen(nbr) - is_sign < 10)
-		return (1);
-	while (nbr[index + is_sign] == comp[index])
-		index++;
-	return (nbr[index + is_sign] <= comp[index]);
+	return (1);
 }
