@@ -12,7 +12,6 @@ In this hub, $N$ coders sit in a circle with exactly $N$ dongles distributed bet
 ## Instructions
 
 ### Compilation
-The project includes a robust `Makefile` configured with strict compilation flags (`-Wall -Wextra -Werror -pthread`) and dependency tracking (`-MMD -MP`).
 
 To compile the executable:
 ```bash
@@ -64,7 +63,7 @@ Run the simulation with the following mandatory command-line arguments:
 #### Example:
 
 ```bash
-./codexion 4 4000 200 200 400 5 100 edf
+./codexion 5 182 50 30 20 10 10 edf
 
 ```
 
