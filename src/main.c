@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:27:26 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 15:36:21 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 16:21:10 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ int	main(int argc, char **argv)
 	if (init_treads(app))
 		return (1);
 	free_app(app);
+	return (0);
 }

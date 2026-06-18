@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 14:13:44 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 16:10:45 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_burnout(t_app *app)
 	int	burnout;
 
 	index = 0;
-	burnout = get_time_usec() / 1000 - app->args->time_to_burnout;
+	burnout = get_time_msec() - app->args->time_to_burnout;
 	while (index < app->args->nb_coders)
 	{
 		pthread_mutex_lock(&app->coders[index]->mutex);

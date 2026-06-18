@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 11:23:06 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/16 14:27:55 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 16:01:48 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	mutex_print(
 		return (0);
 	}
 	pthread_mutex_lock(str_mutex);
-	time = get_time_usec() / 1000;
+	time = get_time_msec();
 	printf("%i %i %s\n", time, coder_id, str);
 	pthread_mutex_unlock(str_mutex);
 	return (0);

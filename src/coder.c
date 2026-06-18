@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 15:12:38 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 15:58:43 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	coder_compile(t_coder *coder, t_app *app)
 		return (1);
 	pthread_mutex_lock(&coder->mutex);
 	coder->nb_compile++;
-	coder->last_compile = get_time_usec() / 1000;
+	coder->last_compile = get_time_msec();
 	pthread_mutex_unlock(&coder->mutex);
 	if (program_ended(app))
 		return (1);
@@ -60,13 +60,13 @@ int	coder_compile(t_coder *coder, t_app *app)
 	if (msleep(app->args->time_to_compile, app))
 		return (1);
 	pthread_mutex_lock(&coder->left_dongle->mutex);
-	coder->left_dongle->last_compile = get_time_usec() / 1000;
+	coder->left_dongle->last_compile = get_time_msec();
 	coder->left_dongle->held = 0;
 	pthread_mutex_unlock(&coder->left_dongle->mutex);
 	if (program_ended(app))
 		return (1);
 	pthread_mutex_lock(&coder->right_dongle->mutex);
-	coder->right_dongle->last_compile = get_time_usec() / 1000;
+	coder->right_dongle->last_compile = get_time_msec();
 	coder->right_dongle->held = 0;
 	pthread_mutex_unlock(&coder->right_dongle->mutex);
 	return (program_ended(app));

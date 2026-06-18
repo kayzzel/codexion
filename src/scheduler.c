@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/17 11:21:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 14:50:22 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 15:59:14 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	scheduler(t_coder *coder, t_dongle *dongle)
 	pthread_mutex_lock(&dongle->mutex);
 	dongle->heap_manager(coder, dongle->heap_queue);
 	if (
-		get_time_usec() / 1000
+		get_time_msec()
 		< dongle->last_compile + coder->infos->dongle_cooldown
 	)
 	{
@@ -94,7 +94,7 @@ int	get_dongle(t_coder *coder, t_dongle *dongle, t_app *app)
 		if (scheduler_return == -1)
 		{
 			cooldown_remaining = (dongle->last_compile
-					+ app->args->dongle_cooldown - (get_time_usec() / 1000));
+					+ app->args->dongle_cooldown - (get_time_msec()));
 			if (msleep(cooldown_remaining, app))
 				return (1);
 		}

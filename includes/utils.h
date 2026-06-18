@@ -6,7 +6,7 @@
 /*   By: kayzzel <gabach@student.42lyon.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:33:47 by kayzzel           #+#    #+#             */
-/*   Updated: 2026/06/16 14:32:18 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 15:55:44 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		thread_print(char *str, int coder_id);
 int		mutex_print(pthread_mutex_t *mutex, char *str, int coder_id);
 
 void	init_time(void);
-int		get_time_usec(void);
+int		get_time_msec(void);
 int		msleep(int msec, t_app *app);
 
 #endif
