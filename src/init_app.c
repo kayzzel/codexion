@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 18:08:18 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 13:16:20 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static t_coder	*create_coder(
 	t_coder	*coder;
 	int		nb_coders;
 
-	coder = malloc(sizeof(t_coder)); // !
+	coder = malloc(sizeof(t_coder));
 	if (coder == NULL)
 		return (NULL);
-	if (pthread_mutex_init(&coder->mutex, NULL)) // !
+	if (pthread_mutex_init(&coder->mutex, NULL))
 	{
 		free(coder);
 		return (NULL);
@@ -113,10 +113,9 @@ t_coder	**init_coders(t_app *app)
 	index = 0;
 	while (index < app->args->nb_coders)
 	{
-		coders[index] = create_coder(index + 1, app); // !
+		coders[index] = create_coder(index + 1, app);
 		if (coders[index] == NULL)
 		{
-			free_dongles(app->dongles);
 			free_coders(coders);
 			return (NULL);
 		}
@@ -135,18 +134,13 @@ t_app	*init_codexion(int argc, char **argv)
 		return (NULL);
 	app->init = 0;
 	app->end = 0;
-	app->args = NULL;
-	if (pthread_cond_init(&app->start_cond, NULL) != 0 // !
-		|| pthread_mutex_init(&app->app_mutex, NULL) != 0) // !
-		return (free_app(app));
+	if (!test_mutex_cond_init(app,
+			pthread_cond_init(&app->start_cond, NULL) == 0,
+			pthread_mutex_init(&app->app_mutex, NULL) == 0))
+		return (NULL);
 	app->args = parsing(argc - 1, argv + 1);
 	if (app->args == NULL)
-	{
-		pthread_cond_destroy(&app->start_cond);
-		pthread_mutex_destroy(&app->app_mutex);
-		free(app);
-		return (NULL);
-	}
+		return (free_app(app));
 	app->dongles = init_dongles(app);
 	app->coders = init_coders(app);
 	if (app->coders == NULL)

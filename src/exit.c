@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 12:43:22 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 18:04:53 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 13:15:47 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	*free_dongles(t_dongle **dongles)
 		index++;
 	}
 	free(dongles);
-	dongles = NULL;
 	return (NULL);
 }
 
@@ -48,7 +47,6 @@ char	*free_coders(t_coder **coders)
 		index++;
 	}
 	free(coders);
-	coders = NULL;
 	return (NULL);
 }
 
@@ -72,6 +70,18 @@ t_app	*free_app(t_app *app)
 	pthread_mutex_destroy(&app->app_mutex);
 	free(app);
 	return (NULL);
+}
+
+int	test_mutex_cond_init(t_app *app, int cond_init, int mutex_init)
+{
+	if (mutex_init && cond_init)
+		return (1);
+	if (cond_init)
+		pthread_cond_destroy(&app->start_cond);
+	if (mutex_init)
+		pthread_mutex_destroy(&app->app_mutex);
+	free(app);
+	return (0);
 }
 
 void	exit_threads(t_app *app, int nb_created, pthread_t *coders_threads)

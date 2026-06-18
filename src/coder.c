@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/17 17:25:18 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/18 12:43:23 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,28 @@
 
 int	get_dongles(t_coder *coder, t_app *app)
 {
-	coder->left_dongle->heap_manager(coder, coder->left_dongle->heap_queue);
-	coder->right_dongle->heap_manager(coder, coder->right_dongle->heap_queue);
-	if (coder->id % 2 == 1)
+	t_dongle	*first_dongle;
+	t_dongle	*second_dongle;
+
+	first_dongle = coder->left_dongle;
+	second_dongle = coder->right_dongle;
+	if (coder->id % 2 == 0)
 	{
-		if (get_dongle(coder, coder->left_dongle, app))
-			return (1);
-		else
-			thread_print("has taken a dongle", coder->id);
-		if (get_dongle(coder, coder->right_dongle, app))
-			return (1);
-		else
-			thread_print("has taken a dongle", coder->id);
+		first_dongle = coder->right_dongle;
+		second_dongle = coder->left_dongle;
 	}
+	if (first_dongle != NULL)
+		first_dongle->heap_manager(coder, first_dongle->heap_queue);
+	if (second_dongle != NULL)
+		second_dongle->heap_manager(coder, second_dongle->heap_queue);
+	if (get_dongle(coder, first_dongle, app))
+		return (1);
 	else
-	{
-		if (get_dongle(coder, coder->right_dongle, app))
-			return (1);
-		else
-			thread_print("has taken a dongle", coder->id);
-		if (get_dongle(coder, coder->left_dongle, app))
-			return (1);
-		else
-			thread_print("has taken a dongle", coder->id);
-	}
+		thread_print("has taken a dongle", coder->id);
+	if (get_dongle(coder, second_dongle, app))
+		return (1);
+	else
+		thread_print("has taken a dongle", coder->id);
 	return (program_ended(app));
 }
 
@@ -92,7 +90,7 @@ void	*coder_main_loop(t_coder *coder, t_app *app)
 		thread_print("is refactoring", coder->id);
 		if (program_ended(app))
 			return (NULL);
-		msleep(app->args->time_to_refactor, app);
+		msleep(app->args->time_to_refactor + (rand() % 70), app);
 	}
 	return (NULL);
 }
