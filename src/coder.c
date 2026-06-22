@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/22 09:31:25 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/22 13:58:06 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ void	*coder_thread_init(void	*arg_ptr)
 		return (NULL);
 	}
 	pthread_mutex_unlock(&app->app_mutex);
+	if (coder->id % 2 == 1)
+		if (msleep(coder->infos->time_to_compile, app))
+			return (NULL);
 	coder_main_loop(coder, app);
 	return (NULL);
 }

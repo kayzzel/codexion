@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/22 09:23:36 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/22 13:58:54 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	is_burnout(t_app *app)
 			app->end = 1;
 			pthread_mutex_unlock(&app->app_mutex);
 			thread_print("burned out", index + 1);
+			stop_mutex_print();
 			return (1);
 		}
 		pthread_mutex_unlock(&app->coders[index]->mutex);
@@ -76,6 +77,7 @@ int	end_compiles(t_app *app)
 		pthread_mutex_lock(&app->app_mutex);
 		app->end = 1;
 		pthread_mutex_unlock(&app->app_mutex);
+		stop_mutex_print();
 		return (1);
 	}
 	return (0);
