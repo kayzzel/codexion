@@ -6,7 +6,7 @@
 /*   By: gabach <gabach@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 16:48:35 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 18:26:33 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/22 09:34:06 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "parsing.h"
 #include "codexion.h"
 #include "scheduler.h"
-#include "utils.h"
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -25,7 +24,7 @@
 static t_dongle	*create_dongle(char scheduler[5], int cooldown)
 {
 	t_dongle	*dongle;
-	void		(*func)(t_coder*, t_coder*[2]);
+	void		(*func)(t_coder*, t_coder*[2], pthread_mutex_t*);
 
 	dongle = malloc(sizeof(t_dongle));
 	if (dongle == NULL)

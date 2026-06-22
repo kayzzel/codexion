@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 11:48:53 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 18:32:57 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/22 09:23:36 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ void	*monitor_thread_init(void *app_ptr)
 
 	app = (t_app *)app_ptr;
 	pthread_mutex_lock(&app->app_mutex);
-	init_time();
-	init_mutex_print(&app->app_mutex);
 	app->init = 1;
 	pthread_cond_broadcast(&app->start_cond);
 	pthread_mutex_unlock(&app->app_mutex);

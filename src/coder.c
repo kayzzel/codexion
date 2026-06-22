@@ -6,7 +6,7 @@
 /*   By: gabach <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 13:20:37 by gabach            #+#    #+#             */
-/*   Updated: 2026/06/18 15:58:43 by gabach           ###   ########.fr       */
+/*   Updated: 2026/06/22 09:31:25 by gabach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,25 @@
 
 int	get_dongles(t_coder *coder, t_app *app)
 {
-	t_dongle	*first_dongle;
-	t_dongle	*second_dongle;
+	t_dongle	*f_dgl;
+	t_dongle	*s_dgl;
 
-	first_dongle = coder->left_dongle;
-	second_dongle = coder->right_dongle;
+	f_dgl = coder->left_dongle;
+	s_dgl = coder->right_dongle;
 	if (coder->id % 2 == 0)
 	{
-		first_dongle = coder->right_dongle;
-		second_dongle = coder->left_dongle;
+		f_dgl = coder->right_dongle;
+		s_dgl = coder->left_dongle;
 	}
-	if (first_dongle != NULL)
-		first_dongle->heap_manager(coder, first_dongle->heap_queue);
-	if (second_dongle != NULL)
-		second_dongle->heap_manager(coder, second_dongle->heap_queue);
-	if (get_dongle(coder, first_dongle, app))
+	if (f_dgl != NULL)
+		f_dgl->heap_manager(coder, f_dgl->heap_queue, &f_dgl->mutex);
+	if (s_dgl != NULL)
+		s_dgl->heap_manager(coder, s_dgl->heap_queue, &s_dgl->mutex);
+	if (get_dongle(coder, f_dgl, app))
 		return (1);
 	else
 		thread_print("has taken a dongle", coder->id);
-	if (get_dongle(coder, second_dongle, app))
+	if (get_dongle(coder, s_dgl, app))
 		return (1);
 	else
 		thread_print("has taken a dongle", coder->id);
